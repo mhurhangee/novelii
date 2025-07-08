@@ -85,7 +85,7 @@ export const Editor = () => {
             event.preventDefault();
             return true;
           }
-          if (event.key === "Escape" && ghost) {
+          if (event.key !== "Tab" && event.key !== "Enter" && ghost) {
             editorRef.current?.commands.clearGhostText();
             event.preventDefault();
             return true;

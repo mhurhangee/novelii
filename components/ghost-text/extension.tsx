@@ -29,17 +29,17 @@ export const AIGhostText = Extension.create<GhostTextOptions>({
     return {
       setGhostText:
         (ghostText: string, from: number) =>
-        () => {
-          this.options.ghostText = ghostText;
-          this.options.from = from;
-          return true;
-        },
+          () => {
+            this.options.ghostText = ghostText;
+            this.options.from = from;
+            return true;
+          },
       clearGhostText:
         () =>
-        () => {
-          this.options.ghostText = "";
-          return true;
-        },
+          () => {
+            this.options.ghostText = "";
+            return true;
+          },
     };
   },
 
@@ -59,6 +59,17 @@ export const AIGhostText = Extension.create<GhostTextOptions>({
                 span.style.userSelect = "none";
                 span.style.fontStyle = "italic";
                 span.className = "ai-ghost-text";
+
+                // Extra hint
+                const hint = document.createElement("span");
+                hint.textContent = "(Tab to accept)";
+                hint.style.opacity = "0.6";
+                hint.style.fontSize = "0.9em";
+                hint.style.marginLeft = "4px";
+                hint.style.color = "#888";
+                hint.className = "ai-ghost-text-hint";
+                span.appendChild(hint);
+
                 return span;
               }),
             ]);

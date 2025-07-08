@@ -20,6 +20,7 @@ export async function POST(req: Request) {
     prompt,
   })
 
+  
   console.log(result.object)
 
   return NextResponse.json(result.object)

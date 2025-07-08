@@ -36,8 +36,11 @@ export const Editor = () => {
       .ghostText ?? ''
 
   async function fetchSuggestion() {
+    
     const fullText = editorRef.current?.getText() ?? ''
     const selectionEnd = editorRef.current?.state.selection.to
+    // Show spinner while loading
+    editorRef.current?.commands.setGhostText('', selectionEnd ?? 0, true)
     const res = await fetch('/api/copilot', {
       method: 'POST',
       body: JSON.stringify({ fullText, selectionEnd }),
@@ -45,7 +48,7 @@ export const Editor = () => {
     })
     const suggestion = await res.json()
 
-    editorRef.current?.commands.setGhostText(suggestion.aiContent, selectionEnd ?? 0)
+    editorRef.current?.commands.setGhostText(suggestion.aiContent, selectionEnd ?? 0, false)
   }
 
   const editor = useEditor({

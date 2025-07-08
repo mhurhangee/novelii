@@ -2,6 +2,8 @@
   "name": "novelii",
   "version": "0.1.0",
   "private": true,
+  "author": "m.hurhangee@me.com",
+  "license": "MIT",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",

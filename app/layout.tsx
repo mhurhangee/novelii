@@ -1,21 +1,27 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
-import { TooltipProvider } from "@/components/ui/tooltip"
-import './globals.css'
 
-const fontSans = Geist({
-  variable: '--font-google-sans',
-  subsets: ['latin'],
-})
+import { TooltipProvider } from '@/components/ui/tooltip'
 
-const fontMono = Geist_Mono({
-  variable: '--font-google-mono',
-  subsets: ['latin'],
-})
+import { appConfig } from '@/lib/config/app'
+import { fontMono, fontSans } from '@/lib/config/fonts'
+
+import '@/styles/globals.css'
 
 export const metadata: Metadata = {
-  title: 'NeuEditor',
-  description: 'An editor for the future',
+  title: process.env.NODE_ENV === 'development' ? `${appConfig.name} (dev)` : appConfig.name,
+  description: appConfig.description,
+  icons: {
+    icon: [
+      {
+        url: `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>${appConfig.emojiFavicon}</text></svg>`,
+      },
+    ],
+    shortcut: [
+      {
+        url: `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>${appConfig.emojiFavicon}</text></svg>`,
+      },
+    ],
+  },
 }
 
 export default function RootLayout({
@@ -25,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${fontSans.variable} ${fontMono.variable} antialiased`}>
+      <body className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased`}>
         <TooltipProvider>{children}</TooltipProvider>
       </body>
     </html>

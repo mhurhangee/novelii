@@ -1,0 +1,51 @@
+.tiptap p.is-editor-empty:first-child::before {
+  color: #71717a;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.tiptap p.is-empty::before {
+  color: #71717a;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.tiptap {
+  overflow: auto hidden;
+  outline: none;
+  padding-left: 1rem;
+}
+
+.tiptap h1 {
+  @apply mt-6 mb-3 text-3xl font-extrabold;
+}
+.tiptap h2 {
+  @apply mt-5 mb-2.5 text-2xl font-bold;
+}
+.tiptap h3 {
+  @apply mt-4 mb-2 text-xl font-semibold;
+}
+.tiptap blockquote {
+  @apply my-4 border-l-4 pl-4 italic;
+}
+.tiptap ul {
+  @apply my-2 ml-6 list-disc;
+}
+.tiptap ol {
+  @apply my-2 ml-6 list-decimal;
+}
+.tiptap li {
+  @apply mb-1;
+}
+
+.tiptap p:not(li p) {
+  @apply my-4;
+}
+
+.tiptap a {
+  @apply text-blue-500 underline;
+}

@@ -17,8 +17,11 @@ import { Markdown } from 'tiptap-markdown'
 import { initialContent } from '../lib/config/initial-content'
 // Bubble Menu
 import { BubbleMenu } from './bubble-menu/bubble-menu'
-import { CopilotTrigger } from './copilot/extension'
-import { AIGhostText } from './ghost-text/extension'
+import { CopilotTrigger } from './copilot/copilot-trigger'
+import { fetchSuggestion } from './copilot/fetch-suggestion'
+import { getGhostText } from './copilot/get-ghost-text'
+import { makeGhostKeydownHandler } from './copilot/ghost-keydown-handler'
+import { AIGhostText } from './copilot/ghost-text'
 // Settings Sheet Menu
 import { SettingsSheet } from './settings-sheet'
 import { ThemeToggle } from './ui/theme-toggle'
@@ -31,26 +34,6 @@ export const Editor = () => {
 
   const editorRef = useRef<TiptapEditor | null>(null)
 
-  const getGhostText = () =>
-    editorRef.current?.extensionManager.extensions.find(ext => ext.name === 'aiGhostText')?.options
-      .ghostText ?? ''
-
-  async function fetchSuggestion() {
-    
-    const fullText = editorRef.current?.getText() ?? ''
-    const selectionEnd = editorRef.current?.state.selection.to
-    // Show spinner while loading
-    editorRef.current?.commands.setGhostText('', selectionEnd ?? 0, true)
-    const res = await fetch('/api/copilot', {
-      method: 'POST',
-      body: JSON.stringify({ fullText, selectionEnd }),
-      headers: { 'Content-Type': 'application/json' },
-    })
-    const suggestion = await res.json()
-
-    editorRef.current?.commands.setGhostText(suggestion.aiContent, selectionEnd ?? 0, false)
-  }
-
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -62,7 +45,7 @@ export const Editor = () => {
         types: ['heading', 'paragraph'],
       }),
       CopilotTrigger.configure({
-        onTrigger: fetchSuggestion,
+        onTrigger: () => editorRef.current && fetchSuggestion(editorRef.current),
       }),
       AIGhostText,
     ],
@@ -76,22 +59,7 @@ export const Editor = () => {
         spellcheck: spellCheckEnabled ? 'true' : 'false',
       },
       handleDOMEvents: {
-        // Listen for Tab/Enter for accepting the suggestion
-        keydown: (view, event) => {
-          const ghost = getGhostText()
-          if ((event.key === 'Tab' || event.key === 'Enter') && ghost) {
-            editorRef.current?.commands.insertContent(ghost)
-            editorRef.current?.commands.clearGhostText()
-            event.preventDefault()
-            return true
-          }
-          if (event.key !== 'Tab' && event.key !== 'Enter' && ghost) {
-            editorRef.current?.commands.clearGhostText()
-            event.preventDefault()
-            return true
-          }
-          return false
-        },
+        keydown: makeGhostKeydownHandler(editorRef, () => getGhostText(editorRef.current)),
       },
     },
   })

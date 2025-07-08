@@ -43,9 +43,9 @@ export const copilot = (fullText: string, selectionEnd: number) => {
 - Return the text as a JSON object with the key 'aiContent'.
 `
 
-const schema = z.object({
-  aiContent: z.string(),
-})
+  const schema = z.object({
+    aiContent: z.string(),
+  })
 
   const prompt = `\
 ${fullText.slice(0, selectionEnd)}

@@ -10,7 +10,13 @@ import { DefaultBubbleMenu } from './default-bubble-menu'
 import { LoadingCard } from './loading-card'
 import { ResponseCard } from './response-card'
 
-export function BubbleMenu({ editor, aiEnabled }: { editor: Editor | null; aiEnabled: boolean }) {
+interface BubbleMenuProps {
+  editor: Editor | null
+  aiEnabled: boolean
+  aiBubbleEnabled: boolean
+}
+
+export const BubbleMenu = ({ editor, aiEnabled, aiBubbleEnabled }: BubbleMenuProps) => {
   const [response, setResponse] = useState<{
     title: string
     reasoning: string
@@ -80,7 +86,7 @@ export function BubbleMenu({ editor, aiEnabled }: { editor: Editor | null; aiEna
     >
       {isAIOpen ? (
         <Card className="box-border w-[400px] max-w-[95vw]">
-          {!response && !isLoading && aiEnabled && (
+          {!response && !isLoading && aiEnabled && aiBubbleEnabled && (
             <AiCommandMenu
               editor={editor}
               onSubmit={command => {
@@ -108,7 +114,11 @@ export function BubbleMenu({ editor, aiEnabled }: { editor: Editor | null; aiEna
           {isLoading && <LoadingCard />}
         </Card>
       ) : (
-        <DefaultBubbleMenu editor={editor} setIsAIOpen={setIsAIOpen} aiEnabled={aiEnabled} />
+        <DefaultBubbleMenu
+          editor={editor}
+          setIsAIOpen={setIsAIOpen}
+          aiEnabled={aiEnabled && aiBubbleEnabled}
+        />
       )}
     </TiptapBubbleMenu>
   )

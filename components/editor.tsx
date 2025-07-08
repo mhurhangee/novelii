@@ -18,10 +18,13 @@ import { initialContent } from '../lib/config/initial-content'
 import { BubbleMenu } from './bubble-menu/bubble-menu'
 // Settings Sheet Menu
 import { SettingsSheet } from './settings-sheet'
+import { ThemeToggle } from './ui/theme-toggle'
 
 export const Editor = () => {
   const [aiEnabled, setAiEnabled] = useState(true)
+  const [aiBubbleEnabled, setAiBubbleEnabled] = useState(true)
   const [htmlEnabled, setHtmlEnabled] = useState(false)
+  const [spellCheckEnabled, setSpellCheckEnabled] = useState(false)
 
   const editor = useEditor({
     extensions: [
@@ -36,18 +39,30 @@ export const Editor = () => {
     ],
     content: initialContent,
     immediatelyRender: false,
+    editorProps: {
+      attributes: {
+        spellcheck: spellCheckEnabled ? 'true' : 'false',
+      },
+    },
   })
 
   return (
     <>
+      <div className="fixed top-4 right-4">
+        <ThemeToggle />
+      </div>
       <EditorContent editor={editor} />
       <SettingsSheet
         aiEnabled={aiEnabled}
         setAiEnabled={setAiEnabled}
+        aiBubbleEnabled={aiBubbleEnabled}
+        setAiBubbleEnabled={setAiBubbleEnabled}
         htmlEnabled={htmlEnabled}
         setHtmlEnabled={setHtmlEnabled}
+        spellCheckEnabled={spellCheckEnabled}
+        setSpellCheckEnabled={setSpellCheckEnabled}
       />
-      <BubbleMenu editor={editor} aiEnabled={aiEnabled} />
+      <BubbleMenu editor={editor} aiEnabled={aiEnabled} aiBubbleEnabled={aiBubbleEnabled} />
       {htmlEnabled && (
         <div className="text-muted-foreground mt-8 border-t text-xs">
           HTML of the document:

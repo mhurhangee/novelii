@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import { TooltipProvider } from '@/components/ui/tooltip'
+import { ThemeProvider } from '@/components/ui/theme-provider'
 
 import { appConfig } from '@/lib/config/app'
 import { fontMono, fontSans } from '@/lib/config/fonts'
@@ -30,9 +30,16 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased`}>
-        <TooltipProvider>{children}</TooltipProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )

@@ -1,0 +1,13 @@
+{
+  "ignore": [
+    "components/ui/*"
+  ],
+  "ignoreDependencies": [
+    "eslint",
+    "eslint-config-next",
+    "tailwindcss",
+    "tw-animate-css",
+    "postcss",
+    "@tailwindcss/typography"
+  ]
+}

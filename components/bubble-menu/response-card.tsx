@@ -39,7 +39,9 @@ export const ResponseCard = ({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ReactMarkdown>{response.modifiedText}</ReactMarkdown>
+        <div className="prose dark:prose-invert">
+          <ReactMarkdown>{response.modifiedText}</ReactMarkdown>
+        </div>
       </CardContent>
       <CardFooter>
         <div className="flex justify-between gap-2">

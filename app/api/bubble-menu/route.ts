@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   const { system, schema, prompt } = bubbleMenu(command, selected, fullMarkdown)
 
   const result = await generateObject({
-    model: models.mini,
+    model: models.groq,
     system,
     schema,
     prompt,

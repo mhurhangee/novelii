@@ -1,7 +1,5 @@
 {
-  "ignore": [
-    "components/ui/*"
-  ],
+  "ignore": ["components/ui/*"],
   "ignoreDependencies": [
     "eslint",
     "eslint-config-next",

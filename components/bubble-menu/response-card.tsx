@@ -6,6 +6,7 @@ import ReactMarkdown from 'react-markdown'
 
 import { Button } from '../ui/button'
 import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card'
+import { ScrollArea } from '../ui/scroll-area'
 
 interface ResponseCardProps {
   command: string
@@ -39,9 +40,11 @@ export const ResponseCard = ({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="prose dark:prose-invert">
-          <ReactMarkdown>{response.modifiedText}</ReactMarkdown>
-        </div>
+        <ScrollArea className="max-h-[450px] overflow-y-auto">
+          <div className="prose dark:prose-invert">
+            <ReactMarkdown>{response.modifiedText}</ReactMarkdown>
+          </div>
+        </ScrollArea>
       </CardContent>
       <CardFooter>
         <div className="flex justify-between gap-2">

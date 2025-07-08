@@ -74,18 +74,18 @@ export const BubbleMenu = ({ editor, aiEnabled, aiBubbleEnabled }: BubbleMenuPro
         hideOnClick: false,
         popperOptions: {
           modifiers: [
-            { name: 'preventOverflow', options: { padding: 8 } }, // keeps it in viewport
-            { name: 'flip', enabled: true }, // flips if not enough space
+            { name: 'preventOverflow', options: { padding: 8 } },
+            { name: 'flip', enabled: true },
           ],
         },
         onHidden: () => {
           handleClose()
         },
-        maxWidth: '95vw', // or '100vw'
+        maxWidth: '95vw',
       }}
     >
       {isAIOpen ? (
-        <Card className="box-border w-[400px] max-w-[95vw]">
+        <Card className="box-border max-w-[95vw] max-w-[800px] min-w-[400px]">
           {!response && !isLoading && aiEnabled && aiBubbleEnabled && (
             <AiCommandMenu
               editor={editor}

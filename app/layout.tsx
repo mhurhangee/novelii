@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
-
+import { TooltipProvider } from "@/components/ui/tooltip"
 import './globals.css'
 
 const fontSans = Geist({
@@ -25,7 +25,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${fontSans.variable} ${fontMono.variable} antialiased`}>{children}</body>
+      <body className={`${fontSans.variable} ${fontMono.variable} antialiased`}>
+        <TooltipProvider>{children}</TooltipProvider>
+      </body>
     </html>
   )
 }

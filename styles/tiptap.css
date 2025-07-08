@@ -14,6 +14,10 @@
   pointer-events: none;
 }
 
+.tiptap p.is-empty:has(.ai-ghost-text)::before {
+  display: none !important;
+}
+
 .tiptap {
   overflow: auto hidden;
   outline: none;
@@ -48,4 +52,20 @@
 
 .tiptap a {
   @apply text-blue-500 underline;
+}
+
+.ai-ghost-text {
+  opacity: 0.4;
+  pointer-events: none;
+  user-select: none;
+  font-style: italic;
+  margin-left: 2px;
+}
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
 }

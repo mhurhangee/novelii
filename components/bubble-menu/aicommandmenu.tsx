@@ -4,7 +4,13 @@ import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { CardContent, CardFooter } from '@/components/ui/card'
-import { Command, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
+import {
+  Command,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command'
 
 import { bubbleMenuOptions } from '@/lib/config/ai/bubble-menu-options'
 

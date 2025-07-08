@@ -35,9 +35,7 @@ export const ResponseCard = ({
     <>
       <CardHeader>
         <CardTitle>AI Response</CardTitle>
-        <CardDescription>
-          {command} :{selected.slice(0, 20) + '...'}
-        </CardDescription>
+        <CardDescription>{command}</CardDescription>
       </CardHeader>
       <CardContent>
         <ScrollArea className="max-h-[450px] overflow-y-auto">

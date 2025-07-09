@@ -29,6 +29,7 @@
     "@tiptap/extension-underline": "^2.25.0",
     "@tiptap/react": "^2.25.0",
     "@tiptap/starter-kit": "^2.25.0",
+    "@tiptap/suggestion": "^2.25.0",
     "ai": "5.0.0-beta.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

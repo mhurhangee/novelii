@@ -49,6 +49,27 @@ export const Assistant = ({ editor }: AssistantProps) => {
         >
           <Plus /> New chat
         </Button>
+        <button
+          onClick={() =>
+            editor.chain().focus().setMark('ai_insert', { reason: 'Insert example' }).run()
+          }
+        >
+          Mark as Insert
+        </button>
+        <button
+          onClick={() =>
+            editor.chain().focus().setMark('ai_delete', { reason: 'Delete example' }).run()
+          }
+        >
+          Mark as Delete
+        </button>
+        <button
+          onClick={() =>
+            editor.chain().focus().setMark('ai_comment', { reason: 'Comment example' }).run()
+          }
+        >
+          Mark as Comment
+        </button>
       </div>
       <div className="flex-1 space-y-4 overflow-y-auto p-4">
         {messages.length === 0 ? (
@@ -82,7 +103,7 @@ export const Assistant = ({ editor }: AssistantProps) => {
                           .filter(part => part.type === 'text')
                           .map(part => {
                             // Remove <DOCUMENT> tags and their contents from user messages
-                            return msg.role === 'user' 
+                            return msg.role === 'user'
                               ? part.text.replace(/<DOCUMENT>[\s\S]*?<\/DOCUMENT>/g, '')
                               : part.text;
                           })

@@ -18,6 +18,8 @@ import { ThemeToggle } from '@/components/ui/theme-toggle'
 
 import { Assistant } from '@/components/assistant/assistant'
 // Custom extensions and components
+import { AiInsert, AiDelete, AiComment } from '@/components/ai-mark/extension'
+
 import { CopilotTrigger } from '@/components/copilot/copilot-trigger'
 import { fetchSuggestion } from '@/components/copilot/fetch-suggestion'
 import { getGhostText } from '@/components/copilot/get-ghost-text'
@@ -41,6 +43,9 @@ export default function Page() {
       Markdown,
       Underline,
       Link,
+      AiInsert,
+      AiDelete,
+      AiComment,
       TextAlign.configure({
         types: ['heading', 'paragraph'],
       }),

@@ -42,8 +42,8 @@ export function SettingsSheet({
 }: SettingsSheetProps) {
   return (
     <Sheet>
-      <SheetTrigger className="fixed right-4 bottom-4 z-50 flex items-center gap-2">
-        <Settings className="h-6 w-6" />
+      <SheetTrigger className="fixed top-4 right-4 z-50 flex items-center gap-2">
+        <Settings className="h-4 w-4" />
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>

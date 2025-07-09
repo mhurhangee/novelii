@@ -55,3 +55,9 @@ ${fullText.slice(selectionEnd)}
 
   return { system, schema, prompt }
 }
+
+export const chat = {
+  system: `\
+- You are a expert writing assistant.
+`,
+}

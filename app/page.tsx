@@ -1,55 +1,44 @@
 'use client'
 
 // React
-import Link from '@tiptap/extension-link'
+import { useEffect, useRef, useState } from 'react'
+// UI components
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
+import { ThemeToggle } from '@/components/ui/theme-toggle'
 // Tiptap extensions
 import Placeholder from '@tiptap/extension-placeholder'
 import TextAlign from '@tiptap/extension-text-align'
 import Underline from '@tiptap/extension-underline'
+import { Markdown } from 'tiptap-markdown'
+import Link from '@tiptap/extension-link'
 // Tiptap core
 import { type Editor as TiptapEditor, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-
-import { useRef, useState } from 'react'
-
-import { Button } from '@/components/ui/button'
-// UI components
-import { Input } from '@/components/ui/input'
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
-import { ThemeToggle } from '@/components/ui/theme-toggle'
-
+// Editor
+import { Editor } from '@/components/editor'
 // Custom extensions and components
 import { CopilotTrigger } from '@/components/copilot/copilot-trigger'
 import { fetchSuggestion } from '@/components/copilot/fetch-suggestion'
 import { getGhostText } from '@/components/copilot/get-ghost-text'
 import { makeGhostKeydownHandler } from '@/components/copilot/ghost-keydown-handler'
 import { AIGhostText } from '@/components/copilot/ghost-text'
-// Editor
-import { Editor } from '@/components/editor'
-
 // Config
+import { cn } from '@/lib/utils'
 import { initialContent } from '@/lib/config/initial-content'
-
+// AI
+import { DefaultChatTransport } from 'ai'
+import { useChat } from '@ai-sdk/react'
+// Icons
 import { Bot, Send, User } from 'lucide-react'
-import { Markdown } from 'tiptap-markdown'
+// Markdown
+import ReactMarkdown from 'react-markdown'
 
-const messages = [
-  {
-    role: 'assistant',
-    content:
-      "Hi! I'm here to help you edit and improve your document. What would you like to work on?",
-  },
-  { role: 'user', content: 'Can you help me make this introduction more engaging?' },
-  {
-    role: 'assistant',
-    content:
-      'I can suggest ways to make your introduction more compelling. Try starting with a question or surprising statistic.',
-  },
-]
+
 
 export default function Page() {
-  const [inputValue, setInputValue] = useState('')
-  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const [input, setInput] = useState('')
 
   const editorRef = useRef<TiptapEditor | null>(null)
 
@@ -83,25 +72,18 @@ export default function Page() {
     },
   })
 
-  const handleSendMessage = () => {
-    if (!inputValue.trim()) return
+  const { messages, setMessages, sendMessage, status, stop } = useChat({
+    transport: new DefaultChatTransport({
+      api: '/api/chat'
+    })
+  })
 
-    // Here you would typically add the message to your state
-    // and then process it to interact with the editor
+  const messagesEndRef = useRef<HTMLDivElement>(null) as React.RefObject<HTMLDivElement>
 
-    // Example of how you could modify the editor content
-    if (editorRef.current) {
-      // This is just an example - replace with your actual editing logic
-      // editorInstance.commands.insertContent(inputValue);
-    }
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
 
-    setInputValue('')
-
-    // Scroll to bottom of messages
-    setTimeout(() => {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-    }, 100)
-  }
 
   return (
     <main className="mx-auto h-screen w-screen font-sans">
@@ -126,50 +108,76 @@ export default function Page() {
               <p className="text-muted-foreground text-center">Chat with AI about your document</p>
             </div>
             <div className="flex-1 space-y-4 overflow-y-auto p-4">
-              {messages.map((message, i) => (
-                <div
-                  key={i}
-                  className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : ''}`}
-                >
-                  <div
-                    className={`flex max-w-[80%] gap-2 ${message.role === 'user' ? 'flex-row-reverse' : ''}`}
-                  >
-                    <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gray-200">
-                      {message.role === 'user' ? (
-                        <User className="h-4 w-4" />
-                      ) : (
-                        <Bot className="h-4 w-4" />
-                      )}
-                    </div>
-                    <div
-                      className={`rounded-lg p-3 ${message.role === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-100 dark:bg-gray-800'}`}
-                    >
-                      {message.content}
-                    </div>
-                  </div>
+              {messages.length === 0 ? (
+                <div className="text-muted-foreground flex h-32 flex-col items-center justify-center">
+                  <p>Hi! I'm here to help you edit and improve your document. What would you like to work on?</p>
                 </div>
-              ))}
-              <div ref={messagesEndRef} />
+              ) : (
+                <>
+                  {messages.map((msg, index) => (
+                    <div key={index} className="mb-4 flex w-full justify-start last:mb-0">
+                      <div className="flex items-start gap-1">
+                        <div className="flex items-center justify-center rounded-full p-1">
+                          {msg.role === 'user' ? (
+                            <User className="text-muted-foreground mt-2 h-4 w-4" />
+                          ) : (
+                            <Bot className="mt-2 h-4 w-4" />
+                          )}
+                        </div>
+                        <div className={cn('rounded-lg px-4 py-2 text-sm', msg.role === 'user' && 'text-muted-foreground')}>
+                          {msg.parts &&
+                            msg.parts.map(part => {
+                              switch (part.type) {
+                                case 'tool-textSearch':
+                                  return 'Asking for confirmation...'
+                                default:
+                                  return ''
+                              }
+                            })}
+                          <ReactMarkdown>
+                            {msg.parts &&
+                              msg.parts
+                                .filter(part => part.type === 'text')
+                                .map(part => part.text)
+                                .join('')}
+                          </ReactMarkdown>
+                          {status === 'streaming' && msg.role === 'assistant' && (msg === messages[messages.length - 1]) && (
+                            <div className="inline-flex items-center gap-1">
+                              <span className="size-1 animate-bounce rounded-full bg-current [animation-delay:0.1s]" />
+                              <span className="size-1 animate-bounce rounded-full bg-current [animation-delay:0.2s]" />
+                              <span className="size-1 animate-bounce rounded-full bg-current [animation-delay:0.3s]" />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  <div ref={messagesEndRef} />
+                </>
+              )}
             </div>
 
             <div className="border-t p-4">
-              <div className="flex gap-2">
-                <Input
-                  placeholder="Ask for editing help..."
-                  className="flex-1"
-                  value={inputValue}
-                  onChange={e => setInputValue(e.target.value)}
-                  onKeyDown={e => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                      e.preventDefault()
-                      handleSendMessage()
-                    }
-                  }}
-                />
-                <Button size="icon" onClick={handleSendMessage}>
-                  <Send className="h-4 w-4" />
-                </Button>
-              </div>
+              <form
+                onSubmit={e => {
+                  e.preventDefault()
+                  sendMessage({ text: input })
+                  setInput('')
+                }}
+                className="w-full"
+              >
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="Ask for editing help..."
+                    className="flex-1"
+                    value={input}
+                    onChange={e => setInput(e.target.value)}
+                  />
+                  <Button size="icon" type="submit">
+                    <Send className="h-4 w-4" />
+                  </Button>
+                </div>
+              </form>
             </div>
           </div>
         </ResizablePanel>

@@ -4,6 +4,8 @@ import { useState } from 'react'
 
 import { type Editor, BubbleMenu as TiptapBubbleMenu } from '@tiptap/react'
 import { AiCommand } from './ai-command'
+import { markdownToTiptapContent } from '../utils/markdown'
+import { addMarkToAllTextNodes } from '../utils/add-mark-to-all-nodes'
 
 interface BubbleMenuProps {
     editor: Editor
@@ -38,53 +40,45 @@ export const BubbleMenu = ({ editor }: BubbleMenuProps) => {
         })
             .then(res => res.json())
             .then(data => {
-                if (replaceSelected) {
-                    const { to } = editor.state.selection
-
+                if (replaceSelected) { // Replace selected text with modified text
+                    
                     // 1. Mark selected text as deleted (ai_delete)
                     editor
                         .chain()
                         .focus()
-                        .setMark('ai_delete', { reason: 'AI delete' })
+                        .setMark('ai_delete', { reason: data.reasoning })
                         .run()
-
+                    
                     // 2. Move cursor to after the selection
-                    editor.commands.setTextSelection(to)
-
-                    // 3. Insert new content with ai_insert mark
-                    editor
-                        .chain()
-                        .focus()
-                        .insertContent({
-                            type: 'text',
-                            text: data,
-                            marks: [
-                                { type: 'ai_insert', attrs: { reason: 'AI insert' } }
-                            ]
-                        })
-                        .unsetMark('ai_insert')
-                        .run()
-                } else {
-                    // 1. Move cursor to after the selection (if you want to always insert after selection)
-                    //    Or use current cursor position if nothing selected
-
-                    // For "after selection" insert:
                     const { to } = editor.state.selection
                     editor.commands.setTextSelection(to)
 
-                    // 2. Insert new content with ai_insert mark
-                    editor
-                        .chain()
-                        .focus()
-                        .insertContent({
-                            type: 'text',
-                            text: data,
-                            marks: [
-                                { type: 'ai_insert', attrs: { reason: 'AI insert' } }
-                            ]
-                        })
-                        .unsetMark('ai_insert')
-                        .run()
+                    // 3. Convert markdown to tiptap content
+                    const json = markdownToTiptapContent(data.modifiedText)
+
+                    // 4. Add ai_insert mark to all text nodes
+                    const mark = { type: 'ai_insert', attrs: { reason: data.reasoning } }
+                    const markedContent = addMarkToAllTextNodes(json, mark)
+
+                    // 5. Insert marked content
+                    editor.commands.insertContent(markedContent)
+                    
+                } else {// Insert modified text after selection
+                    
+                    // 1. Move cursor to after the selection
+                    const { to } = editor.state.selection
+                    editor.commands.setTextSelection(to)
+
+                    // 2. Convert markdown to tiptap content
+                    const json = markdownToTiptapContent(data.modifiedText)
+
+                    // 3. Add ai_insert mark to all text nodes
+                    const mark = { type: 'ai_insert', attrs: { reason: data.reasoning } }
+                    const markedContent = addMarkToAllTextNodes(json, mark)
+
+                    // 4. Insert marked content
+                    editor.commands.insertContent(markedContent)
+
                 }
                 setIsLoading(false)
             })

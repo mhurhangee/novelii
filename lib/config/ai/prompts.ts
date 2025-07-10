@@ -5,7 +5,7 @@ export const bubbleMenu = (userInstructions: string, selected: string, fullMarkd
 -You are a expert writing assistant.  
 -You will be given plain text to modify (denoted by <TEXT_TO_MODIFY>), which is part of a document <FULL_DOC>.
 -You will be given instructions (denoted by <USER_INSTRUCTIONS>) on how to modify the text to modify. 
--You will return a JSON object with the modifiedText.
+-You will return a JSON object with the modifiedText and reasoning.
 -Format the modifiedText with markdown.
 -Make sure the modifiedText follows the same style as the rest of the document and fits in naturally.
 - Do not repeat the document or parts of the existing document in your response.`

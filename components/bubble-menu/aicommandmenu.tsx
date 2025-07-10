@@ -12,7 +12,7 @@ import {
   CommandList,
 } from '@/components/ui/command'
 
-import { bubbleMenuOptions } from '@/lib/config/ai/bubble-menu-options'
+import { bubbleMenuOptions } from '@/components/v2/bubble-menu/ai-command-options'
 
 import { Send, X } from 'lucide-react'
 
@@ -41,7 +41,6 @@ export function AiCommandMenu({
 
   return (
     <>
-      <CardContent>
         <Command>
           <CommandInput
             placeholder="Send a prompt to the AI..."
@@ -68,8 +67,6 @@ export function AiCommandMenu({
             ))}
           </CommandList>
         </Command>
-      </CardContent>
-      <CardFooter>
         <div className="flex w-full justify-end gap-2">
           <Button
             variant="outline"
@@ -88,7 +85,6 @@ export function AiCommandMenu({
             <Send />
           </Button>
         </div>
-      </CardFooter>
     </>
   )
 }

@@ -5,13 +5,19 @@ import Strike from "@tiptap/extension-strike"
 import Link from "@tiptap/extension-link"
 import Superscript from "@tiptap/extension-superscript"
 import Subscript from "@tiptap/extension-subscript"
+import { Markdown } from "tiptap-markdown"
+
+
 
 export const extensions = [
     StarterKit,
-    TextAlign,
+    TextAlign.configure({
+      types: ['heading', 'paragraph'],
+    }),
     Underline,
     Strike,
     Link,
     Superscript,
-    Subscript
+    Subscript,
+    Markdown
 ]

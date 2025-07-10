@@ -9,7 +9,10 @@ export const runtime = 'edge'
 export const maxDuration = 30
 
 export async function POST(req: Request) {
-  const { command, selected, fullMarkdown } = await req.json()
+  const { command, selected, fullMarkdown, replaceSelected } = await req.json()
+
+  console.log("command", command)
+  console.log("replaceSelected", replaceSelected)
 
   const { system, schema, prompt } = bubbleMenu(command, selected, fullMarkdown)
 
@@ -19,6 +22,7 @@ export async function POST(req: Request) {
     schema,
     prompt,
   })
+  console.log(result.object.modifiedText)
 
-  return NextResponse.json(result.object)
+  return NextResponse.json(result.object.modifiedText)
 }

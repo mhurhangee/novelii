@@ -30,3 +30,11 @@ export function makeGhostKeydownHandler(
     return false
   }
 }
+
+export function getGhostText(editor: TiptapEditor | null): string {
+  return (
+    editor?.extensionManager.extensions.find(ext => ext.name === 'aiGhostText')?.options
+      .ghostText ?? ''
+  )
+}
+

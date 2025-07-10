@@ -18,13 +18,13 @@ import { ThemeToggle } from '@/components/ui/theme-toggle'
 
 import { Assistant } from '@/components/assistant/assistant'
 // Custom extensions and components
-import { AiInsert, AiDelete, AiComment } from '@/components/ai-mark/extension'
+import { AiInsert, AiDelete, AiComment } from '@/components/v2/extensions/ai-marks'
 
-import { CopilotTrigger } from '@/components/copilot/copilot-trigger'
-import { fetchSuggestion } from '@/components/copilot/fetch-suggestion'
-import { getGhostText } from '@/components/copilot/get-ghost-text'
-import { makeGhostKeydownHandler } from '@/components/copilot/ghost-keydown-handler'
-import { AIGhostText } from '@/components/copilot/ghost-text'
+import { CopilotTrigger } from '@/components/v2/extensions/copilot/copilot-trigger'
+import { fetchSuggestion } from '@/components/v2/extensions/ghost-text/fetch-suggestion'
+import { getGhostText } from '@/components/v2/extensions/ghost-text/get-ghost-text'
+import { makeGhostKeydownHandler } from '@/components/v2/extensions/ghost-text/ghost-keydown-handler'
+import { AIGhostText } from '@/components/v2/extensions/ghost-text/ghost-text'
 // Editor
 import { Editor } from '@/components/editor'
 
@@ -52,7 +52,7 @@ export default function Page() {
       CopilotTrigger.configure({
         onTrigger: () => editorRef.current && fetchSuggestion(editorRef.current),
       }),
-      AIGhostText,
+      ,
     ],
     content: initialContent,
     immediatelyRender: false,

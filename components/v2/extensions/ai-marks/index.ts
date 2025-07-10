@@ -36,6 +36,6 @@ export function createAiMark(name: string, color: string, extraCSS = '') {
   })
 }
 
-export const AiInsert = createAiMark('ai_insert', '#c1f7c1')
-export const AiDelete = createAiMark('ai_delete', '#f7c1c1', 'text-decoration: line-through;')
-export const AiComment = createAiMark('ai_comment', '#fff9c1')
+export const AiInsert = createAiMark('ai_insert', 'var(--ai-insert-bg)', 'color: var(--foreground);')
+export const AiDelete = createAiMark('ai_delete', 'var(--ai-delete-bg)', 'text-decoration: line-through; color: var(--foreground);')
+export const AiComment = createAiMark('ai_comment', 'var(--ai-comment-bg)', 'color: var(--foreground);')

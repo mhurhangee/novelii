@@ -4,6 +4,7 @@
 import { EditorContent } from '@tiptap/react'
 import type { Editor as TiptapEditor } from '@tiptap/react'
 import { Toolbar } from './toolbar'
+import { BubbleMenu } from './bubble-menu'
 
 export const NovelliEditor = ({ editor }: { editor: TiptapEditor }) => {
 
@@ -12,6 +13,7 @@ export const NovelliEditor = ({ editor }: { editor: TiptapEditor }) => {
             <Toolbar editor={editor} />
             <div className="flex-1 overflow-y-auto">
                 <EditorContent editor={editor} />
+                <BubbleMenu editor={editor} />
             </div>
         </div>
     )

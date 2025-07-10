@@ -7,12 +7,14 @@ export const bubbleMenu = (userInstructions: string, selected: string, fullMarkd
 -You will be given instructions (denoted by <USER_INSTRUCTIONS>) on how to modify the text to modify. 
 -You will return a JSON object with the modifiedText.
 -Format the modifiedText with markdown.
--Make sure the modifiedText follows the same style as the rest of the document and fits in naturally.`
+-Make sure the modifiedText follows the same style as the rest of the document and fits in naturally.
+- Do not repeat the document or parts of the existing document in your response.`
 
   const schema = z.object({
     modifiedText: z
       .string()
       .describe('Text modified in line with user instructions and formatted as markdown'),
+    reasoning: z.string().describe('A short description of your reasoning/justification for modification.'),
   })
 
   const prompt = `\
@@ -31,7 +33,7 @@ ${fullMarkdown}
   return { system, schema, prompt }
 }
 
-export const copilot = (fullText: string, selectionEnd: number) => {
+export const inlineAISuggestion = (fullText: string, selectionEnd: number) => {
   const system = `\
 - You are a expert writing assistant.  
 - You will be given a piece of text that a user has asked for help writing part of.

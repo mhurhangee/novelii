@@ -6,6 +6,7 @@ import { type Editor, BubbleMenu as TiptapBubbleMenu } from '@tiptap/react'
 import { AiCommand } from './ai-command'
 import { markdownToTiptapContent } from '../utils/markdown'
 import { addMarkToAllTextNodes } from '../utils/add-mark-to-all-nodes'
+import { Loading } from './loading'
 
 interface BubbleMenuProps {
     editor: Editor
@@ -99,6 +100,7 @@ export const BubbleMenu = ({ editor }: BubbleMenuProps) => {
                 maxWidth: '95vw',
             }}
         >
-            <AiCommand onSubmit={handleSubmit} editor={editor} />
+            {!isLoading && <AiCommand onSubmit={handleSubmit} editor={editor} />}
+            {isLoading && <Loading />}
         </TiptapBubbleMenu>)
 }

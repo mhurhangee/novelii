@@ -2,6 +2,8 @@ import type { Editor as TiptapEditor } from '@tiptap/react'
 
 import type { RefObject } from 'react'
 
+import { markdownToTiptapContent } from '../../utils/markdown'
+
 export function makeGhostKeydownHandler(
   editorRef: RefObject<TiptapEditor | null>,
   getGhostText: () => string
@@ -9,12 +11,8 @@ export function makeGhostKeydownHandler(
   return (view: unknown, event: KeyboardEvent) => {
     const ghost = getGhostText()
     if ((event.key === 'Tab' || event.key === 'Enter') && ghost) {
-      editorRef.current?.commands.insertContent({
-        type: 'text',
-        text: ghost,
-        marks: [{ type: 'ai_insert', attrs: { reason: 'AI insert' } }],
-      })
-      editorRef.current?.commands.unsetMark('ai_insert')
+      const ghostJson = markdownToTiptapContent(ghost)
+      editorRef.current?.commands.insertContent(ghostJson)
       editorRef.current?.commands.clearGhostText()
       event.preventDefault()
       return true

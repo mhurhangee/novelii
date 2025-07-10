@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 
 import { DefaultChatTransport } from 'ai'
-import { Bot, Plus, Send, Square, User } from 'lucide-react'
+import { Bot, RotateCcw, Send, Square, User } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 
 interface NovelliAssistantProps {
@@ -35,49 +35,22 @@ export const NovelliAssistant = ({ editor }: NovelliAssistantProps) => {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="p-4">
-        <h1 className="mb-4 text-center text-3xl font-bold">Novelii Assistant</h1>
-        <p className="text-muted-foreground text-center">Chat with AI about your document</p>
-        {/*<Button onClick={() => editor.commands.insertContent('Hello world!')}>Insert</Button>*/}
-      </div>
-      <div className="flex items-center justify-end gap-2 p-2">
+      <div className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40 border-b backdrop-blur">
         <Button
-          size="sm"
-          variant="outline"
+          variant="ghost"
           onClick={() => (setMessages([]), setInput(''))}
           disabled={status === 'streaming'}
         >
-          <Plus /> New chat
+          <RotateCcw /> Clear chat
         </Button>
-        <button
-          onClick={() =>
-            editor.chain().focus().setMark('ai_insert', { reason: 'Insert example' }).run()
-          }
-        >
-          Mark as Insert
-        </button>
-        <button
-          onClick={() =>
-            editor.chain().focus().setMark('ai_delete', { reason: 'Delete example' }).run()
-          }
-        >
-          Mark as Delete
-        </button>
-        <button
-          onClick={() =>
-            editor.chain().focus().setMark('ai_comment', { reason: 'Comment example' }).run()
-          }
-        >
-          Mark as Comment
-        </button>
       </div>
       <div className="flex-1 space-y-4 overflow-y-auto p-4">
         {messages.length === 0 ? (
           <div className="text-muted-foreground flex h-32 flex-col items-center justify-center">
-            <p>
-              Hi! I am Novelii, an AI assistant here to help you edit and improve your document.
+            <h1 className="text-center text-4xl font-bold">Novelii AI Assistant</h1>
+            <p className="pt-8 text-center">
+              Chat with an AI assistant to help you edit and improve your document.
             </p>
-            <p>What would you like to work on?</p>
           </div>
         ) : (
           <>

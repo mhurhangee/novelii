@@ -8,10 +8,11 @@ import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
+import { parser, renderParsedXML } from '@/lib/parser'
 import { cn } from '@/lib/utils'
 
 import { DefaultChatTransport } from 'ai'
-import { Bot, RotateCcw, Send, Square, User } from 'lucide-react'
+import { RotateCcw, Send, Square } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 
 interface NovelliAssistantProps {
@@ -25,6 +26,7 @@ export const NovelliAssistant = ({ editor }: NovelliAssistantProps) => {
     transport: new DefaultChatTransport({
       api: '/api/chat',
     }),
+    maxSteps: 1,
   })
 
   const messagesEndRef = useRef<HTMLDivElement>(null) as React.RefObject<HTMLDivElement>
@@ -55,43 +57,35 @@ export const NovelliAssistant = ({ editor }: NovelliAssistantProps) => {
         ) : (
           <>
             {messages.map((msg, index) => (
-              <div key={index} className="mb-4 flex w-full justify-start last:mb-0">
-                <div className="flex items-start gap-1">
-                  <div className="flex items-center justify-center rounded-full p-1">
-                    {msg.role === 'user' ? (
-                      <User className="text-muted-foreground mt-2 h-4 w-4" />
-                    ) : (
-                      <Bot className="mt-2 h-4 w-4" />
+              <div key={index} className={cn("flex w-full justify-start", msg.role === 'user' && 'justify-end')}>
+                <div
+                  className={cn(
+                    'rounded-lg px-4 text-sm',
+                    msg.role === 'user' && 'text-muted-foreground'
+                  )}
+                >
+                  {msg.parts &&
+                    msg.parts
+                      .filter(part => part.type === 'text')
+                      .map((part, i) => {
+                        if (msg.role === 'assistant') {
+                          const parsed = parser.parse(`<ROOT>${part.text}</ROOT>`)?.ROOT ?? {}
+                          return <div key={i}>{renderParsedXML(parsed)}</div>
+                        } else {
+                          // For user, maybe just render text or Markdown
+                          return <ReactMarkdown key={i}>{part.text}</ReactMarkdown>
+                        }
+                      })}
+
+                  {status === 'streaming' &&
+                    msg.role === 'assistant' &&
+                    msg === messages[messages.length - 1] && (
+                      <div className="inline-flex items-center gap-1">
+                        <span className="size-1 animate-bounce rounded-full bg-current [animation-delay:0.1s]" />
+                        <span className="size-1 animate-bounce rounded-full bg-current [animation-delay:0.2s]" />
+                        <span className="size-1 animate-bounce rounded-full bg-current [animation-delay:0.3s]" />
+                      </div>
                     )}
-                  </div>
-                  <div
-                    className={cn(
-                      'prose dark:prose-invert rounded-lg px-4 py-2 text-sm',
-                      msg.role === 'user' && 'text-muted-foreground'
-                    )}
-                  >
-                    <ReactMarkdown>
-                      {msg.parts &&
-                        msg.parts
-                          .filter(part => part.type === 'text')
-                          .map(part => {
-                            // Remove <DOCUMENT> tags and their contents from user messages
-                            return msg.role === 'user'
-                              ? part.text.replace(/<DOCUMENT>[\s\S]*?<\/DOCUMENT>/g, '')
-                              : part.text
-                          })
-                          .join('')}
-                    </ReactMarkdown>
-                    {status === 'streaming' &&
-                      msg.role === 'assistant' &&
-                      msg === messages[messages.length - 1] && (
-                        <div className="inline-flex items-center gap-1">
-                          <span className="size-1 animate-bounce rounded-full bg-current [animation-delay:0.1s]" />
-                          <span className="size-1 animate-bounce rounded-full bg-current [animation-delay:0.2s]" />
-                          <span className="size-1 animate-bounce rounded-full bg-current [animation-delay:0.3s]" />
-                        </div>
-                      )}
-                  </div>
                 </div>
               </div>
             ))}
@@ -113,7 +107,12 @@ export const NovelliAssistant = ({ editor }: NovelliAssistantProps) => {
               size="icon"
               disabled={input.trim().length === 0}
               onClick={() => (
-                sendMessage({ text: '<DOCUMENT>' + editor.getHTML() + '</DOCUMENT>' + input }),
+                sendMessage(
+                  { text: input },
+                  {
+                    body: { document: editor.storage.markdown.getMarkdown() },
+                  }
+                ),
                 setInput('')
               )}
             >

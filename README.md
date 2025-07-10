@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Novelii
 
-## Getting Started
+An AI writing assistant and [TipTap editor](https://tiptap.dev/) inspired by [Novel](https://github.com/steven-tey/novel).
 
-First, run the development server:
+**Please note that this is a work in progress and is not ready for production.**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## AI Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Auto-suggestions (Ctrl/Cmd + Space, then Tab to accept)
+- Modify or generate text in the document (bubble menu on text selection)
+- AI insertions and deletions as tracked changes (click on a marked up text to accept or reject)
+- Assistant to chat about document (assistant chat UI)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Roadmap
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Agentic features to edit document from assistant chat UI
+- AI configuration settings, like style, tone, document type, etc.
 
-## Learn More
+## Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+- [Next.js](https://nextjs.org/)
+- [TipTap](https://tiptap.dev/)
+- [AI SDK](https://ai-sdk.dev/)
+- [Shadcn UI](https://ui.shadcn.com/)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Installation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1.  Clone the repository
+2.  Install dependencies `pnpm i`
+3.  Configure AI SDK models in `config/ai/models.ts` and add API key to `.env.local`. For more information on how to configure models see [AISDK docs](https://ai-sdk.dev/docs/foundations/providers-and-models)
+4.  Run the development server `pnpm dev`
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT

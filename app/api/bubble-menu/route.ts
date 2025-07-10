@@ -20,5 +20,8 @@ export async function POST(req: Request) {
     prompt,
   })
 
-  return NextResponse.json(result.object)
+  return NextResponse.json({
+    modifiedText: result.object.modifiedText,
+    reasoning: result.object.reasoning,
+  })
 }

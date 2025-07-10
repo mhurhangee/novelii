@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils'
 
 import { CheckIcon, LinkIcon, Trash2Icon } from 'lucide-react'
 
-export const LinkSelector = ({ editor }: { editor: Editor }) => {
+export const LinkButton = ({ editor }: { editor: Editor }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const editorState = useEditorState({
     editor,

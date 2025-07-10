@@ -7,6 +7,7 @@ import { AiCommand } from './ai-command'
 import { markdownToTiptapContent } from '../utils/markdown'
 import { addMarkToAllTextNodes } from '../utils/add-mark-to-all-nodes'
 import { Loading } from './loading'
+import { isInAiMark, isNormalSelection } from '../extensions/ai-marks/utils'
 
 interface BubbleMenuProps {
     editor: Editor
@@ -15,22 +16,6 @@ interface BubbleMenuProps {
 export const BubbleMenu = ({ editor }: BubbleMenuProps) => {
     const [command, setCommand] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-
-    const { from, to, empty } = editor.state.selection
-
-    const isInAiMark =
-        (empty && (
-            editor.isActive('ai_insert') ||
-            editor.isActive('ai_delete') ||
-            editor.isActive('ai_comment')
-        )) ||
-        (!empty && (
-            editor.state.doc.rangeHasMark(from, to, editor.schema.marks.ai_insert) ||
-            editor.state.doc.rangeHasMark(from, to, editor.schema.marks.ai_delete) ||
-            editor.state.doc.rangeHasMark(from, to, editor.schema.marks.ai_comment)
-        ))
-
-    const isNormalSelection = !empty && !isInAiMark
 
     function handleSubmit(command: string, replaceSelected: boolean) {
 
@@ -115,11 +100,15 @@ export const BubbleMenu = ({ editor }: BubbleMenuProps) => {
                 },
                 maxWidth: '95vw',
             }}
-            shouldShow={() => isInAiMark || isNormalSelection}
+            shouldShow={() => {
+                if(isInAiMark(editor)) return true
+                if(isNormalSelection(editor)) return true
+                return false
+            }}
         >
-            {!isLoading && <AiCommand onSubmit={handleSubmit} editor={editor} />}
+            {!isLoading && !isInAiMark(editor) && <AiCommand onSubmit={handleSubmit} editor={editor} />}
             {isLoading && <Loading />}
-            {isInAiMark && "HJEHEHEHHEJHEHJ"}
+            {isInAiMark(editor) && "AI Mark"}
 
         </TiptapBubbleMenu>)
 }

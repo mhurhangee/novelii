@@ -67,3 +67,25 @@ export function getAiMarkMetadata(editor: Editor) {
   
     return found // e.g., { reason: "AI grammar improvement." }
 }
+
+export function isInAiMark(editor: Editor): boolean {
+    const { from, to, empty } = editor.state.selection
+    return (
+      (empty && (
+        editor.isActive('ai_insert') ||
+        editor.isActive('ai_delete') ||
+        editor.isActive('ai_comment')
+      )) ||
+      (!empty && (
+        editor.state.doc.rangeHasMark(from, to, editor.schema.marks.ai_insert) ||
+        editor.state.doc.rangeHasMark(from, to, editor.schema.marks.ai_delete) ||
+        editor.state.doc.rangeHasMark(from, to, editor.schema.marks.ai_comment)
+      ))
+    ) || false
+  }
+  
+  export function isNormalSelection(editor: Editor): boolean {
+    const { empty } = editor.state.selection
+    return !empty && !isInAiMark(editor) || false
+  }
+  

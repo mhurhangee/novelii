@@ -99,6 +99,28 @@ export const BubbleMenu = ({ editor }: BubbleMenuProps) => {
                 },
                 maxWidth: '95vw',
             }}
+            shouldShow={({ state }) => {
+                // Always show when there's a selection or cursor is inside a mark
+                const { from, to, empty } = state.selection
+            
+                // Case 1 & 2: Cursor or selection in a mark
+                const isInAiMark =
+                  (empty && (
+                    editor.isActive('ai_insert') ||
+                    editor.isActive('ai_delete') ||
+                    editor.isActive('ai_comment')
+                  )) ||
+                  (!empty && (
+                    state.doc.rangeHasMark(from, to, editor.schema.marks.ai_insert) ||
+                    state.doc.rangeHasMark(from, to, editor.schema.marks.ai_delete) ||
+                    state.doc.rangeHasMark(from, to, editor.schema.marks.ai_comment)
+                  ))
+            
+                // Case 3: Any other selection (not in a mark)
+                const isNormalSelection = !empty && !isInAiMark
+            
+                return isInAiMark || isNormalSelection
+              }}
         >
             {!isLoading && <AiCommand onSubmit={handleSubmit} editor={editor} />}
             {isLoading && <Loading />}

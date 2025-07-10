@@ -16,6 +16,22 @@ export const BubbleMenu = ({ editor }: BubbleMenuProps) => {
     const [command, setCommand] = useState('')
     const [isLoading, setIsLoading] = useState(false)
 
+    const { from, to, empty } = editor.state.selection
+
+    const isInAiMark =
+        (empty && (
+            editor.isActive('ai_insert') ||
+            editor.isActive('ai_delete') ||
+            editor.isActive('ai_comment')
+        )) ||
+        (!empty && (
+            editor.state.doc.rangeHasMark(from, to, editor.schema.marks.ai_insert) ||
+            editor.state.doc.rangeHasMark(from, to, editor.schema.marks.ai_delete) ||
+            editor.state.doc.rangeHasMark(from, to, editor.schema.marks.ai_comment)
+        ))
+
+    const isNormalSelection = !empty && !isInAiMark
+
     function handleSubmit(command: string, replaceSelected: boolean) {
 
         const selected = editor.state.doc.textBetween(
@@ -42,14 +58,14 @@ export const BubbleMenu = ({ editor }: BubbleMenuProps) => {
             .then(res => res.json())
             .then(data => {
                 if (replaceSelected) { // Replace selected text with modified text
-                    
+
                     // 1. Mark selected text as deleted (ai_delete)
                     editor
                         .chain()
                         .focus()
                         .setMark('ai_delete', { reason: data.reasoning })
                         .run()
-                    
+
                     // 2. Move cursor to after the selection
                     const { to } = editor.state.selection
                     editor.commands.setTextSelection(to)
@@ -63,9 +79,9 @@ export const BubbleMenu = ({ editor }: BubbleMenuProps) => {
 
                     // 5. Insert marked content
                     editor.commands.insertContent(markedContent)
-                    
+
                 } else {// Insert modified text after selection
-                    
+
                     // 1. Move cursor to after the selection
                     const { to } = editor.state.selection
                     editor.commands.setTextSelection(to)
@@ -99,30 +115,11 @@ export const BubbleMenu = ({ editor }: BubbleMenuProps) => {
                 },
                 maxWidth: '95vw',
             }}
-            shouldShow={({ state }) => {
-                // Always show when there's a selection or cursor is inside a mark
-                const { from, to, empty } = state.selection
-            
-                // Case 1 & 2: Cursor or selection in a mark
-                const isInAiMark =
-                  (empty && (
-                    editor.isActive('ai_insert') ||
-                    editor.isActive('ai_delete') ||
-                    editor.isActive('ai_comment')
-                  )) ||
-                  (!empty && (
-                    state.doc.rangeHasMark(from, to, editor.schema.marks.ai_insert) ||
-                    state.doc.rangeHasMark(from, to, editor.schema.marks.ai_delete) ||
-                    state.doc.rangeHasMark(from, to, editor.schema.marks.ai_comment)
-                  ))
-            
-                // Case 3: Any other selection (not in a mark)
-                const isNormalSelection = !empty && !isInAiMark
-            
-                return isInAiMark || isNormalSelection
-              }}
+            shouldShow={() => isInAiMark || isNormalSelection}
         >
             {!isLoading && <AiCommand onSubmit={handleSubmit} editor={editor} />}
             {isLoading && <Loading />}
+            {isInAiMark && "HJEHEHEHHEJHEHJ"}
+
         </TiptapBubbleMenu>)
 }

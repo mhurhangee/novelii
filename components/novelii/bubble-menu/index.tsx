@@ -4,14 +4,15 @@ import { type Editor, BubbleMenu as TiptapBubbleMenu } from '@tiptap/react'
 
 import { useState } from 'react'
 
+import { addMarkToAllTextNodes } from '@/lib/add-mark-to-all-nodes'
+import { markdownToTiptapContent } from '@/lib/markdown'
+
 import {
   clearActiveAiMark,
   deleteActiveAiMarkedText,
   isInAiMark,
   isNormalSelection,
 } from '../extensions/ai-marks/utils'
-import { addMarkToAllTextNodes } from '../utils/add-mark-to-all-nodes'
-import { markdownToTiptapContent } from '../utils/markdown'
 import { AiCommand } from './ai-command'
 import { AiMarkMenu } from './ai-mark-menu'
 import { Loading } from './loading'

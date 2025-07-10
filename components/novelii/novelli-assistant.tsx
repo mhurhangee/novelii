@@ -57,7 +57,10 @@ export const NovelliAssistant = ({ editor }: NovelliAssistantProps) => {
         ) : (
           <>
             {messages.map((msg, index) => (
-              <div key={index} className={cn("flex w-full justify-start", msg.role === 'user' && 'justify-end')}>
+              <div
+                key={index}
+                className={cn('flex w-full justify-start', msg.role === 'user' && 'justify-end')}
+              >
                 <div
                   className={cn(
                     'rounded-lg px-4 text-sm',

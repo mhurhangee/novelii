@@ -57,7 +57,7 @@ Below is a skeleton example response showing the XML format.  The skeleton respo
     messages: convertedMessages,
     experimental_transform: smoothStream({
       delayInMs: 20,
-      chunking: new RegExp("<([a-zA-Z0-9:_-]+)[^>]*>[\\s\\S]*?<\\/\\1>", "g"),
+      chunking: new RegExp('<([a-zA-Z0-9:_-]+)[^>]*>[\\s\\S]*?<\\/\\1>', 'g'),
     }),
   })
 

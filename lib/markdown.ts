@@ -2,7 +2,7 @@ import { generateJSON } from '@tiptap/react'
 
 import { marked } from 'marked'
 
-import { extensions } from '../extensions'
+import { extensions } from '../components/novelii/extensions'
 
 export function markdownToTiptapContent(markdown: string) {
   const html = marked(markdown)

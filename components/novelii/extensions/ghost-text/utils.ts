@@ -2,7 +2,7 @@ import type { Editor as TiptapEditor } from '@tiptap/react'
 
 import type { RefObject } from 'react'
 
-import { markdownToTiptapContent } from '../../utils/markdown'
+import { markdownToTiptapContent } from '../../../../lib/markdown'
 
 export function makeGhostKeydownHandler(
   editorRef: RefObject<TiptapEditor | null>,

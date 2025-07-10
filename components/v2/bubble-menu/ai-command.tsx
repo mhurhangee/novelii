@@ -13,7 +13,7 @@ import {
 
 import { aiCommandOptions } from './ai-command-options'
 
-import { Send } from 'lucide-react'
+import { Send, X } from 'lucide-react'
 
 interface AiCommandProps {
     onSubmit: (command: string, replaceSelected: boolean) => void
@@ -50,9 +50,14 @@ export function AiCommand({ onSubmit, editor }: AiCommandProps) {
                 }}
                 className="w-full"
             />
-            <Button type="button" size="icon" onClick={handleButtonClick} className="z-50 absolute right-0 top-0 rounded-tr-lg rounded-br-none rounded-tl-none rounded-bl-none">
-                <Send />
-            </Button>
+            <div className="z-50 absolute right-0 top-0">
+                <Button type="button" size="icon" variant="ghost" onClick={() => setInput('')} className="rounded-none">
+                    <X />
+                </Button>
+                <Button type="button" size="icon" onClick={handleButtonClick} className="rounded-tr-lg rounded-br-none rounded-tl-none rounded-bl-none">
+                    <Send />
+                </Button>
+            </div>
             <CommandList>
                 {aiCommandOptions.map(group => (
                     <CommandGroup key={group.group} heading={group.group}>

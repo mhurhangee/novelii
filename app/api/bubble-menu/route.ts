@@ -11,8 +11,8 @@ export const maxDuration = 30
 export async function POST(req: Request) {
   const { command, selected, fullMarkdown, replaceSelected } = await req.json()
 
-  console.log("command", command)
-  console.log("replaceSelected", replaceSelected)
+  console.log('command', command)
+  console.log('replaceSelected', replaceSelected)
 
   const { system, schema, prompt } = bubbleMenu(command, selected, fullMarkdown)
 
@@ -22,11 +22,11 @@ export async function POST(req: Request) {
     schema,
     prompt,
   })
-  console.log("result.object.modifiedText", result.object.modifiedText)
-  console.log("result.object.reasoning", result.object.reasoning)
+  console.log('result.object.modifiedText', result.object.modifiedText)
+  console.log('result.object.reasoning', result.object.reasoning)
 
   return NextResponse.json({
     modifiedText: result.object.modifiedText,
-    reasoning: result.object.reasoning
+    reasoning: result.object.reasoning,
   })
 }

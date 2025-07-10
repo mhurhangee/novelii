@@ -1,5 +1,5 @@
-'use client'
+import { Editor } from '@/components/novelii/editor'
 
 export default function Page() {
-    return <div>Page</div>
+  return <Editor />
 }

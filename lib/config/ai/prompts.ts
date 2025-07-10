@@ -14,7 +14,9 @@ export const bubbleMenu = (userInstructions: string, selected: string, fullMarkd
     modifiedText: z
       .string()
       .describe('Text modified in line with user instructions and formatted as markdown'),
-    reasoning: z.string().describe('A short description of your reasoning/justification for modification.'),
+    reasoning: z
+      .string()
+      .describe('A short description of your reasoning/justification for modification.'),
   })
 
   const prompt = `\

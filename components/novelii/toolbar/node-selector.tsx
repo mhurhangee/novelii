@@ -8,6 +8,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import {
   CheckIcon,
   ChevronDownIcon,
+  CodeIcon,
   Heading1,
   Heading2,
   Heading3,
@@ -15,7 +16,6 @@ import {
   List,
   ListOrdered,
   QuoteIcon,
-  CodeIcon,
 } from 'lucide-react'
 
 const items = [

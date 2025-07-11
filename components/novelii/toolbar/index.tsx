@@ -8,6 +8,7 @@ import { LinkButton } from './link-button'
 import { NodeSelector } from './node-selector'
 import { TextAlignSelector } from './text-align-selector'
 import { ThemeToggle } from './theme-toggle'
+import { TocNavigator } from './tocnavigator'
 import { UndoRedo } from './undo-redo'
 
 export const Toolbar = ({ editor }: { editor: TiptapEditor }) => {
@@ -16,6 +17,7 @@ export const Toolbar = ({ editor }: { editor: TiptapEditor }) => {
       <div className="flex items-center">
         <div className="flex w-full justify-between">
           <div className="flex-shrink-0">
+            <TocNavigator editor={editor} />
             <NodeSelector editor={editor} />
             <FormattingSelector editor={editor} />
             <TextAlignSelector editor={editor} />

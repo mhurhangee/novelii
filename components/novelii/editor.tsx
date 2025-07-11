@@ -1,5 +1,7 @@
 'use client'
 
+import TableOfContents from '@tiptap/extension-table-of-contents'
+import { getHierarchicalIndexes } from '@tiptap/extension-table-of-contents'
 import { useEditor } from '@tiptap/react'
 import { Editor as TiptapEditor } from '@tiptap/react'
 
@@ -29,6 +31,9 @@ export const Editor = () => {
       AiInsert,
       AiDelete,
       AiComment,
+      TableOfContents.configure({
+        getIndex: getHierarchicalIndexes,
+      }),
     ],
     onCreate({ editor }) {
       editorRef.current = editor

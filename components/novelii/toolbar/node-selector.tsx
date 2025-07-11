@@ -15,6 +15,7 @@ import {
   List,
   ListOrdered,
   QuoteIcon,
+  CodeIcon,
 } from 'lucide-react'
 
 const items = [
@@ -59,6 +60,12 @@ const items = [
     icon: QuoteIcon,
     command: (editor: Editor) => editor.chain().focus().toggleBlockquote().run(),
     isActive: (editor: Editor) => editor.isActive('blockquote'),
+  },
+  {
+    name: 'Code Block',
+    icon: CodeIcon,
+    command: (editor: Editor) => editor.chain().focus().toggleCodeBlock().run(),
+    isActive: (editor: Editor) => editor.isActive('codeBlock'),
   },
 ]
 

@@ -8,6 +8,8 @@ import { fontMono, fontSans } from '@/lib/config/fonts'
 
 import '@/styles/globals.css'
 
+import 'highlight.js/styles/github.css'
+
 export const metadata: Metadata = {
   title: process.env.NODE_ENV === 'development' ? `${appConfig.name} (dev)` : appConfig.name,
   description: appConfig.description,

@@ -16,7 +16,7 @@ import { makeGhostKeydownHandler } from './extensions/ghost-text/utils'
 import { getGhostText } from './extensions/ghost-text/utils'
 import { InlineAISuggestion } from './extensions/inline-ai-suggestion'
 import { fetchSuggestion } from './extensions/inline-ai-suggestion/utils'
-import { SlashMenu } from './extensions/slash'
+import { SlashMenu } from './extensions/slash-commands'
 import { SplitView } from './split-view'
 
 export const Editor = () => {
@@ -42,9 +42,14 @@ export const Editor = () => {
       setMenuOpen(false)
       return
     }
-    // Query is the text after last '/'
     const query = textBefore.slice(slashIndex + 1)
-    // Get coords for menu
+
+    // Dismiss if query contains any space (after the slash)
+    if (query.includes(' ')) {
+      setMenuOpen(false)
+      return
+    }
+    // Open if just "/" or if filtering by query
     const coords = editor.view.coordsAtPos(from - query.length - 1)
     setMenuOpen(true)
     setMenuQuery(query)
@@ -70,6 +75,7 @@ export const Editor = () => {
     onCreate({ editor }) {
       editorRef.current = editor
     },
+
     content: initialContent,
     immediatelyRender: false,
     editorProps: {
@@ -104,6 +110,10 @@ export const Editor = () => {
         if (event.key === 'Escape') {
           setMenuOpen(false)
           return true
+        }
+        if (event.key === ' ') {
+          setMenuOpen(false)
+          return false // let space through to the editor
         }
         // Let all other keys through (typing for filter)
         return false

@@ -1,6 +1,7 @@
 import type { Editor as TiptapEditor } from '@tiptap/react'
 
 import {
+  CodeIcon,
   Command as CommandIcon,
   DivideIcon,
   Heading1Icon,
@@ -70,5 +71,11 @@ export const COMMANDS: Command[] = [
     description: 'Horizontal line.',
     icon: DivideIcon,
     command: (editor, range) => editor.chain().focus().deleteRange(range).setHorizontalRule().run(),
+  },
+  {
+    title: 'Code Block',
+    description: 'Code block.',
+    icon: CodeIcon,
+    command: (editor, range) => editor.chain().focus().deleteRange(range).toggleCodeBlock().run(),
   },
 ]

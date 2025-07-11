@@ -10,6 +10,7 @@ import {
   ListIcon,
   ListOrderedIcon,
   QuoteIcon,
+  SparklesIcon,
 } from 'lucide-react'
 
 type Command = {
@@ -20,6 +21,18 @@ type Command = {
 }
 
 export const COMMANDS: Command[] = [
+  {
+    title: "AI Command",
+    description: "Open AI Command menu",
+    icon: SparklesIcon,
+    command: (editor, range) => {
+      // Move selection to where the slash command was
+      editor.chain().focus().deleteRange(range).run()
+      editor.chain().focus().insertContent(" <br/> ").run()
+      editor.chain().focus().setTextSelection({from: range.from, to: range.from + 1}).run()
+      // Or, if needed, add a custom mark or attribute so shouldShow returns true
+    }
+  },
   {
     title: 'Paragraph',
     description: 'Normal text.',

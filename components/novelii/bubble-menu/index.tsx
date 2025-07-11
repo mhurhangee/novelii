@@ -16,12 +16,14 @@ import {
 import { AiCommand } from './ai-command'
 import { AiMarkMenu } from './ai-mark-menu'
 import { Loading } from './loading'
+import type { aiSettings } from '../editor'
 
 interface BubbleMenuProps {
   editor: Editor
+  aiSettings: aiSettings
 }
 
-export const BubbleMenu = ({ editor }: BubbleMenuProps) => {
+export const BubbleMenu = ({ editor, aiSettings }: BubbleMenuProps) => {
   const [isLoading, setIsLoading] = useState(false)
 
   function handleAccept(mark: string) {
@@ -77,6 +79,7 @@ export const BubbleMenu = ({ editor }: BubbleMenuProps) => {
         selected,
         fullMarkdown,
         replaceSelected,
+        aiSettings,
       }),
     })
       .then(res => res.json())

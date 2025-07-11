@@ -1,12 +1,16 @@
 import { models } from '@/lib/config/ai/models'
 
 import { UIMessage, convertToModelMessages, smoothStream, streamText } from 'ai'
+import type { aiSettings } from '@/components/novelii/editor'
 
 export const maxDuration = 30
 export const runtime = 'edge'
 
 export async function POST(req: Request) {
-  const { messages, document }: { messages: UIMessage[]; document: string } = await req.json()
+  const { messages, document, aiSettings }: { messages: UIMessage[]; document: string, aiSettings: aiSettings } = await req.json()
+
+  const { documentType, audience, tone, purpose } = aiSettings
+  console.log(documentType, audience, tone, purpose)
 
   const convertedMessages = convertToModelMessages(messages)
 

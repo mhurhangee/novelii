@@ -19,17 +19,34 @@ import { fetchSuggestion } from './extensions/inline-ai-suggestion/utils'
 import { SlashMenu } from './extensions/slash-commands'
 import { SplitView } from './split-view'
 
+export type aiSettings = {
+  documentType: string
+  audience: string
+  tone: string
+  purpose: string
+}
+
 export const Editor = () => {
+  // Editor
   const editorRef = useRef<TiptapEditor | null>(null)
 
+  // Slash menu
   const [menuOpen, setMenuOpen] = useState(false)
   const [menuQuery, setMenuQuery] = useState('')
   const [menuPos, setMenuPos] = useState({ top: 0, left: 0 })
   const [menuRange, setMenuRange] = useState({ from: 0, to: 0 })
   const [menuSelected, setMenuSelected] = useState(0)
 
-  // For menu filtering
+  // For menu filtering of slash commands
   const COMMANDS = SlashMenu.COMMANDS
+
+  // AI settings
+  const [aiSettings, setAiSettings] = useState<aiSettings>({
+    documentType: 'general',
+    audience: 'general',
+    tone: 'general',
+    purpose: 'general',
+  })
 
   // This function recalculates menu open/query/position etc.
   function onUpdate() {
@@ -130,7 +147,7 @@ export const Editor = () => {
   if (!editor) return null
   return (
     <>
-      <SplitView editor={editor} />
+      <SplitView editor={editor} aiSettings={aiSettings} setAiSettings={setAiSettings} />
       <SlashMenu
         open={menuOpen}
         position={menuPos}

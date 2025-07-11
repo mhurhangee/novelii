@@ -14,12 +14,19 @@ import { cn } from '@/lib/utils'
 import { DefaultChatTransport } from 'ai'
 import { RotateCcw, Send, Square } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
+import { DocumentTypeSelector } from './toolbar/document-type-selector'
+import { AudienceSelector } from './toolbar/audience-selector'
+import { ToneSelector } from './toolbar/tone-selector'
+import { PurposeSelector } from './toolbar/purpose-selector'
+import type { aiSettings } from './editor'
 
 interface NovelliAssistantProps {
   editor: TiptapEditor
+  aiSettings: aiSettings
+  setAiSettings: (aiSettings: aiSettings) => void
 }
 
-export const NovelliAssistant = ({ editor }: NovelliAssistantProps) => {
+export const NovelliAssistant = ({ editor, aiSettings, setAiSettings }: NovelliAssistantProps) => {
   const [input, setInput] = useState('')
 
   const { messages, setMessages, sendMessage, status, stop } = useChat({
@@ -38,13 +45,17 @@ export const NovelliAssistant = ({ editor }: NovelliAssistantProps) => {
   return (
     <div className="flex h-full flex-col">
       <div className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40 border-b backdrop-blur">
-        <Button
-          variant="ghost"
-          onClick={() => (setMessages([]), setInput(''))}
-          disabled={status === 'streaming'}
-        >
-          <RotateCcw /> Clear chat
-        </Button>
+        <div className="flex justify-between">
+          <div>
+            <DocumentTypeSelector aiSettings={aiSettings} setAiSettings={setAiSettings} />
+            <AudienceSelector aiSettings={aiSettings} setAiSettings={setAiSettings} />
+            <ToneSelector aiSettings={aiSettings} setAiSettings={setAiSettings} />
+            <PurposeSelector aiSettings={aiSettings} setAiSettings={setAiSettings} />
+          </div>
+          <Button variant="ghost">
+            Help
+          </Button>
+        </div>
       </div>
       <div className="flex-1 space-y-4 overflow-y-auto p-4">
         {messages.length === 0 ? (
@@ -99,6 +110,14 @@ export const NovelliAssistant = ({ editor }: NovelliAssistantProps) => {
 
       <div className="border-t p-4">
         <div className="flex gap-2">
+          <Button
+            variant="ghost"
+            onClick={() => (setMessages([]), setInput(''))}
+            disabled={status === 'streaming'}
+            size="icon"
+          >
+            <RotateCcw />
+          </Button>
           <Input
             placeholder="Ask for editing help..."
             className="flex-1"
@@ -113,7 +132,7 @@ export const NovelliAssistant = ({ editor }: NovelliAssistantProps) => {
                 sendMessage(
                   { text: input },
                   {
-                    body: { document: editor.storage.markdown.getMarkdown() },
+                    body: { document: editor.storage.markdown.getMarkdown(), aiSettings },
                   }
                 ),
                 setInput('')

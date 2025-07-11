@@ -6,9 +6,11 @@ import TextAlign from '@tiptap/extension-text-align'
 import Underline from '@tiptap/extension-underline'
 import StarterKit from '@tiptap/starter-kit'
 
+import GlobalDragHandle from 'tiptap-extension-global-drag-handle'
 import { Markdown } from 'tiptap-markdown'
 
 export const extensions = [
+  GlobalDragHandle,
   StarterKit,
   TextAlign.configure({
     types: ['heading', 'paragraph'],

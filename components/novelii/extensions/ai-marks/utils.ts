@@ -1,6 +1,8 @@
 // ai-mark-utils.ts
 import type { Editor } from '@tiptap/react'
 
+import { TextSelection } from 'prosemirror-state'
+
 const AI_MARKS = ['ai_insert', 'ai_delete', 'ai_comment']
 
 /**
@@ -84,6 +86,7 @@ export function isInAiMark(editor: Editor): boolean {
 }
 
 export function isNormalSelection(editor: Editor): boolean {
-  const { empty } = editor.state.selection
-  return (!empty && !isInAiMark(editor)) || false
+  const { selection } = editor.state
+  const isTextSel = selection instanceof TextSelection
+  return isTextSel && !selection.empty && !isInAiMark(editor)
 }

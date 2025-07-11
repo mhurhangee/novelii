@@ -2,6 +2,7 @@
 
 import { Editor as TiptapEditor } from '@tiptap/react'
 
+import { ExportDialog } from './export-dialog'
 import { FormattingSelector } from './formatting-selector'
 import { LinkButton } from './link-button'
 import { NodeSelector } from './node-selector'
@@ -22,6 +23,7 @@ export const Toolbar = ({ editor }: { editor: TiptapEditor }) => {
           </div>
           <div className="flex-shrink-0">
             <ThemeToggle />
+            <ExportDialog editor={editor} />
             <UndoRedo editor={editor} />
           </div>
         </div>

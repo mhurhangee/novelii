@@ -1,6 +1,13 @@
+import { AISettings } from '@/components/novelii/editor'
+
 import { z } from 'zod'
 
-export const bubbleMenu = (userInstructions: string, selected: string, fullMarkdown: string) => {
+export const bubbleMenu = (
+  userInstructions: string,
+  selected: string,
+  fullMarkdown: string,
+  aiSettings: AISettings
+) => {
   const system = `\
 -You are a expert writing assistant.  
 -You will be given plain text to modify (denoted by <TEXT_TO_MODIFY>), which is part of a document <FULL_DOC>.
@@ -22,6 +29,10 @@ export const bubbleMenu = (userInstructions: string, selected: string, fullMarkd
   const prompt = `\
 <USER_INSTRUCTIONS>
 ${userInstructions}
+
+<AI_SETTINGS>
+${JSON.stringify(aiSettings.customPrompt)}
+</AI_SETTINGS>
 </USER_INSTRUCTIONS>
 
 <TEXT_TO_MODIFY>
@@ -35,7 +46,11 @@ ${fullMarkdown}
   return { system, schema, prompt }
 }
 
-export const inlineAISuggestion = (fullText: string, selectionEnd: number) => {
+export const inlineAISuggestion = (
+  fullText: string,
+  selectionEnd: number,
+  customPrompt: string
+) => {
   const system = `\
 - You are a expert writing assistant.  
 - You will be given a piece of text that a user has asked for help writing part of.
@@ -46,6 +61,10 @@ export const inlineAISuggestion = (fullText: string, selectionEnd: number) => {
 - The full text of the document is provided for context, you only need to return the text that should be inserted.
 - Return the text as a JSON object with the key 'aiContent'.
 - Format the text as markdown.
+
+<USER_INSTRUCTIONS>
+${customPrompt}
+</USER_INSTRUCTIONS>
 `
 
   const schema = z.object({

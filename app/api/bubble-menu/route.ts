@@ -9,9 +9,9 @@ export const runtime = 'edge'
 export const maxDuration = 30
 
 export async function POST(req: Request) {
-  const { command, selected, fullMarkdown } = await req.json()
+  const { command, selected, fullMarkdown, aiSettings } = await req.json()
 
-  const { system, schema, prompt } = bubbleMenu(command, selected, fullMarkdown)
+  const { system, schema, prompt } = bubbleMenu(command, selected, fullMarkdown, aiSettings)
 
   const result = await generateObject({
     model: models.groq,

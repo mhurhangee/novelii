@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { addMarkToAllTextNodes } from '@/lib/add-mark-to-all-nodes'
 import { markdownToTiptapContent } from '@/lib/markdown'
 
+import { AISettings } from '../editor'
 import {
   clearActiveAiMark,
   deleteActiveAiMarkedText,
@@ -19,9 +20,10 @@ import { Loading } from './loading'
 
 interface BubbleMenuProps {
   editor: Editor
+  aiSettings: AISettings
 }
 
-export const BubbleMenu = ({ editor }: BubbleMenuProps) => {
+export const BubbleMenu = ({ editor, aiSettings }: BubbleMenuProps) => {
   const [isLoading, setIsLoading] = useState(false)
 
   function handleAccept(mark: string) {
@@ -77,6 +79,7 @@ export const BubbleMenu = ({ editor }: BubbleMenuProps) => {
         selected,
         fullMarkdown,
         replaceSelected,
+        aiSettings,
       }),
     })
       .then(res => res.json())

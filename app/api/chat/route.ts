@@ -1,3 +1,5 @@
+import type { AISettings } from '@/components/novelii/editor'
+
 import { models } from '@/lib/config/ai/models'
 
 import { UIMessage, convertToModelMessages, smoothStream, streamText } from 'ai'
@@ -6,7 +8,13 @@ export const maxDuration = 30
 export const runtime = 'edge'
 
 export async function POST(req: Request) {
-  const { messages, document }: { messages: UIMessage[]; document: string } = await req.json()
+  const {
+    messages,
+    document,
+    aiSettings,
+  }: { messages: UIMessage[]; document: string; aiSettings: AISettings } = await req.json()
+
+  const { customPrompt } = aiSettings
 
   const convertedMessages = convertToModelMessages(messages)
 
@@ -18,6 +26,10 @@ You are a helpful writing assistant.
 
 # TASK
 Assist the user with their edits and improve the provided document as denoted by the <DOCUMENT> tag.
+
+# USER INSTRUCTIONS
+The user has provided the following instructions:
+${customPrompt}
 
 # THE DOCUMENT
 <DOCUMENT> 
@@ -32,6 +44,7 @@ ${document}
 - YOU MUST always include <OPENING_REMARKS> and <CLOSING_REMARKS> tags. 
 - The other tags are situational and should be used when appropriate.
 - You must justify or explain your edits, insertions, deletes, brainstorming ideas, etc. in the <EXPLANATORY_REMARKS> tag.
+- Simple responses may only require <OPENING_REMARKS>, <CLARIFICATION>, and/or <CLOSING_REMARKS> tags.
 
 ## RESPONSE TAGS
 - <TITLE> : Denotes a summary of the title of the response (optional)
@@ -43,6 +56,7 @@ ${document}
 - <BRAINSTORMING> : Denotes brainstorming ideas for the document (optional)
 - <SUMMARY> : Denotes a summary of the document (optional)
 - <EXPLANATORY_REMARKS> : Denotes explanatory remarks justifying or explaining your edits, insertions, deletes, etc.  (situational)
+- <CLARIFICATION> : Denotes clarification of the user's instructions (optional)
 
 # EXAMPLE RESPONSE
 Below is a skeleton example response showing the XML format.  The skeleton response just shows the XML tag format and not the content of the tags.

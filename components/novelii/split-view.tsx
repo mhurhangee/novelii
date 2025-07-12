@@ -2,9 +2,9 @@ import { Editor as TiptapEditor } from '@tiptap/react'
 
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 
+import { AISettings } from './editor'
 import { NovelliAssistant } from './novelli-assistant'
 import { NovelliEditor } from './novelli-editor'
-import { AISettings } from './editor'
 
 export const SplitView = ({
   editor,
@@ -23,7 +23,7 @@ export const SplitView = ({
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={50}>
-          <NovelliAssistant editor={editor} aiSettings={aiSettings} setAiSettings={setAiSettings}/>
+          <NovelliAssistant editor={editor} aiSettings={aiSettings} setAiSettings={setAiSettings} />
         </ResizablePanel>
       </ResizablePanelGroup>
     </main>

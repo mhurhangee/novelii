@@ -5,7 +5,7 @@ import { getHierarchicalIndexes } from '@tiptap/extension-table-of-contents'
 import { useEditor } from '@tiptap/react'
 import { Editor as TiptapEditor } from '@tiptap/react'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { initialContent } from '@/lib/config/initial-content'
 
@@ -19,7 +19,7 @@ import { fetchSuggestion } from './extensions/inline-ai-suggestion/utils'
 import { SlashMenu } from './extensions/slash-commands'
 import { SplitView } from './split-view'
 
-export type AISettings ={ 
+export type AISettings = {
   documentType: string
   audience: string
   tone: string
@@ -30,10 +30,12 @@ export type AISettings ={
   customPrompt: string
 }
 
-
 export const Editor = () => {
   // Editor
   const editorRef = useRef<TiptapEditor | null>(null)
+
+  // Keep a ref to the latest aiSettings to use in callbacks
+  const aiSettingsRef = useRef<AISettings | null>(null)
 
   // Slash menu
   const [menuOpen, setMenuOpen] = useState(false)
@@ -56,6 +58,11 @@ export const Editor = () => {
     additionalInstructions: '',
     customPrompt: '',
   })
+
+  // Update the ref whenever aiSettings changes
+  useEffect(() => {
+    aiSettingsRef.current = aiSettings
+  }, [aiSettings])
 
   // This function recalculates menu open/query/position etc.
   function onUpdate() {
@@ -88,7 +95,10 @@ export const Editor = () => {
     extensions: [
       ...extensions,
       InlineAISuggestion.configure({
-        onTrigger: () => editorRef.current && fetchSuggestion(editorRef.current),
+        onTrigger: () =>
+          editorRef.current &&
+          aiSettingsRef.current &&
+          fetchSuggestion(editorRef.current, aiSettingsRef.current),
       }),
       AIGhostText,
       AiInsert,

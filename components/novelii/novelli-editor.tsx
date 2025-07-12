@@ -5,8 +5,8 @@ import { EditorContent } from '@tiptap/react'
 import type { Editor as TiptapEditor } from '@tiptap/react'
 
 import { BubbleMenu } from './bubble-menu'
-import { Toolbar } from './toolbar'
 import { AISettings } from './editor'
+import { Toolbar } from './toolbar'
 
 export const NovelliEditor = ({
   editor,

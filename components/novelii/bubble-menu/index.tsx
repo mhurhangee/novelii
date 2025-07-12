@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { addMarkToAllTextNodes } from '@/lib/add-mark-to-all-nodes'
 import { markdownToTiptapContent } from '@/lib/markdown'
 
+import { AISettings } from '../editor'
 import {
   clearActiveAiMark,
   deleteActiveAiMarkedText,
@@ -16,7 +17,6 @@ import {
 import { AiCommand } from './ai-command'
 import { AiMarkMenu } from './ai-mark-menu'
 import { Loading } from './loading'
-import { AISettings } from '../editor'
 
 interface BubbleMenuProps {
   editor: Editor

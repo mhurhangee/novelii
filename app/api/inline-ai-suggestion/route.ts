@@ -9,9 +9,13 @@ export const runtime = 'edge'
 export const maxDuration = 30
 
 export async function POST(req: Request) {
-  const { fullText, selectionEnd } = await req.json()
+  const { fullText, selectionEnd, customPrompt } = await req.json()
 
-  const { system, schema, prompt } = inlineAISuggestion(fullText, selectionEnd)
+  console.log('customPrompt', customPrompt)
+
+  const { system, schema, prompt } = inlineAISuggestion(fullText, selectionEnd, customPrompt)
+
+  console.log('system', system)
 
   const result = await generateObject({
     model: models.groq,

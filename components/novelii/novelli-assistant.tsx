@@ -15,9 +15,8 @@ import { DefaultChatTransport } from 'ai'
 import { RotateCcw, Send, Square } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 
-import { PromptBuilder } from './toolbar/prompt-builder'
-
 import type { AISettings } from './editor'
+import { PromptBuilder } from './toolbar/prompt-builder'
 
 interface NovelliAssistantProps {
   editor: TiptapEditor

@@ -14,8 +14,7 @@ export async function POST(req: Request) {
     aiSettings,
   }: { messages: UIMessage[]; document: string; aiSettings: AISettings } = await req.json()
 
-  const { documentType, audience, tone, purpose, style, context, additionalInstructions, customPrompt } = aiSettings
-  console.log(documentType, audience, tone, purpose, style, context, additionalInstructions, customPrompt)
+  const { customPrompt } = aiSettings
 
   const convertedMessages = convertToModelMessages(messages)
 

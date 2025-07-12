@@ -6,9 +6,15 @@ import type { Editor as TiptapEditor } from '@tiptap/react'
 
 import { BubbleMenu } from './bubble-menu'
 import { Toolbar } from './toolbar'
-import type { aiSettings } from './editor'
+import { AISettings } from './editor'
 
-export const NovelliEditor = ({ editor, aiSettings }: { editor: TiptapEditor, aiSettings: aiSettings }) => {
+export const NovelliEditor = ({
+  editor,
+  aiSettings,
+}: {
+  editor: TiptapEditor
+  aiSettings: AISettings
+}) => {
   return (
     <div className="flex h-full flex-col">
       <Toolbar editor={editor} />

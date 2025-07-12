@@ -68,6 +68,12 @@ function renderXMLTag(tag: string, content: string | string[]) {
           <ReactMarkdown>{content}</ReactMarkdown>
         </div>
       )
+    case 'CLARIFICATION':
+      return (
+        <div className="my-1 rounded bg-gray-50 px-2 py-1 font-medium">
+          <ReactMarkdown>{content}</ReactMarkdown>
+        </div>
+      )
     default:
       return <div>{content}</div>
   }

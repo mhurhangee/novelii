@@ -14,16 +14,15 @@ import { cn } from '@/lib/utils'
 import { DefaultChatTransport } from 'ai'
 import { RotateCcw, Send, Square } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
-import { DocumentTypeSelector } from './toolbar/document-type-selector'
-import { AudienceSelector } from './toolbar/audience-selector'
-import { ToneSelector } from './toolbar/tone-selector'
-import { PurposeSelector } from './toolbar/purpose-selector'
-import type { aiSettings } from './editor'
+
+import { PromptBuilder } from './toolbar/prompt-builder'
+
+import type { AISettings } from './editor'
 
 interface NovelliAssistantProps {
   editor: TiptapEditor
-  aiSettings: aiSettings
-  setAiSettings: (aiSettings: aiSettings) => void
+  aiSettings: AISettings
+  setAiSettings: (aiSettings: AISettings) => void
 }
 
 export const NovelliAssistant = ({ editor, aiSettings, setAiSettings }: NovelliAssistantProps) => {
@@ -47,14 +46,9 @@ export const NovelliAssistant = ({ editor, aiSettings, setAiSettings }: NovelliA
       <div className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40 border-b backdrop-blur">
         <div className="flex justify-between">
           <div>
-            <DocumentTypeSelector aiSettings={aiSettings} setAiSettings={setAiSettings} />
-            <AudienceSelector aiSettings={aiSettings} setAiSettings={setAiSettings} />
-            <ToneSelector aiSettings={aiSettings} setAiSettings={setAiSettings} />
-            <PurposeSelector aiSettings={aiSettings} setAiSettings={setAiSettings} />
+            <PromptBuilder aiSettings={aiSettings} setAiSettings={setAiSettings} />
           </div>
-          <Button variant="ghost">
-            Help
-          </Button>
+          <Button variant="ghost">Help</Button>
         </div>
       </div>
       <div className="flex-1 space-y-4 overflow-y-auto p-4">

@@ -19,12 +19,17 @@ import { fetchSuggestion } from './extensions/inline-ai-suggestion/utils'
 import { SlashMenu } from './extensions/slash-commands'
 import { SplitView } from './split-view'
 
-export type aiSettings = {
+export type AISettings ={ 
   documentType: string
   audience: string
   tone: string
   purpose: string
+  style: string
+  context: string
+  additionalInstructions: string
+  customPrompt: string
 }
+
 
 export const Editor = () => {
   // Editor
@@ -41,11 +46,15 @@ export const Editor = () => {
   const COMMANDS = SlashMenu.COMMANDS
 
   // AI settings
-  const [aiSettings, setAiSettings] = useState<aiSettings>({
-    documentType: 'general',
-    audience: 'general',
-    tone: 'general',
-    purpose: 'general',
+  const [aiSettings, setAiSettings] = useState<AISettings>({
+    documentType: '',
+    audience: '',
+    tone: '',
+    purpose: '',
+    style: '',
+    context: '',
+    additionalInstructions: '',
+    customPrompt: '',
   })
 
   // This function recalculates menu open/query/position etc.

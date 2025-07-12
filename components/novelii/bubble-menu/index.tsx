@@ -16,11 +16,11 @@ import {
 import { AiCommand } from './ai-command'
 import { AiMarkMenu } from './ai-mark-menu'
 import { Loading } from './loading'
-import type { aiSettings } from '../editor'
+import { AISettings } from '../editor'
 
 interface BubbleMenuProps {
   editor: Editor
-  aiSettings: aiSettings
+  aiSettings: AISettings
 }
 
 export const BubbleMenu = ({ editor, aiSettings }: BubbleMenuProps) => {
